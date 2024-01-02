@@ -1,0 +1,19 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/prueba.dir/src/test.cpp.o[0m
+[100%] [32m[1mLinking CXX executable prueba[0m
+[100%] Built target prueba
+-- Install configuration: ""
+-- Installing: /home/benjamin/ros2_ws/src/visualization/install/visualization/lib/visualization/prueba
+-- Set runtime path of "/home/benjamin/ros2_ws/src/visualization/install/visualization/lib/visualization/prueba" to ""
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/ament_index/resource_index/package_run_dependencies/visualization
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/ament_index/resource_index/parent_prefix_path/visualization
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/environment/path.dsv
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/local_setup.bash
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/local_setup.sh
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/local_setup.zsh
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/local_setup.dsv
+-- Installing: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/package.dsv
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/ament_index/resource_index/packages/visualization
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/cmake/visualizationConfig.cmake
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/cmake/visualizationConfig-version.cmake
+-- Up-to-date: /home/benjamin/ros2_ws/src/visualization/install/visualization/share/visualization/package.xml

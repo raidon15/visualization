@@ -29,8 +29,7 @@ int main(int argc, char **argv)
     pose.translation() = Eigen::Vector3d(0.1, 0.1, 0.1);          // translate x,y,z
 
     // Publish arrow vector of pose
-    visual_tools_->publishArrow(pose, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
-
+    visual_tools_->publishSphere(pose, rviz_visual_tools::RED, rviz_visual_tools::XXLARGE);
     // Don't forget to trigger the publisher!
     visual_tools_->trigger();
     return 0;
