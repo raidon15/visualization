@@ -22,6 +22,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(visualization REQUIRED)
 
 add_executable(sphere_publish_service src/sphere_publish_service.cpp)
+add_executable(sphere_publish_client src/sphere_publish_client.cpp)
 add_executable(prueba src/test.cpp)
 
 ament_target_dependencies(sphere_publish_service 
@@ -36,6 +37,17 @@ ament_target_dependencies(sphere_publish_service
   rviz_visual_tools
   visualization)
 
+  ament_target_dependencies(sphere_publish_client
+  std_srvs
+  rclcpp 
+  geometry_msgs
+  rviz_common
+  moveit_core
+  eigen3_cmake_module
+  eigen_stl_containers
+  Eigen3
+  rviz_visual_tools
+  visualization)
 ament_target_dependencies(prueba 
   rclcpp 
   geometry_msgs
@@ -55,5 +67,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 install(TARGETS
   prueba
   sphere_publish_service
+  sphere_publish_client
   DESTINATION lib/${PROJECT_NAME})
 ament_package()

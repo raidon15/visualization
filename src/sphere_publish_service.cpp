@@ -28,7 +28,7 @@ void sphere(const std::shared_ptr<visualization::srv::MarkerPublish::Request> re
 { // Create pose
   Eigen::Isometry3d pose;
   pose = Eigen::AngleAxisd(M_PI / 4, Eigen::Vector3d::UnitY()); // rotate along X axis by 45 degrees
-  pose.translation() = Eigen::Vector3d(0.1, 0.1, 0.1);          // translate x,y,z
+  pose.translation() = Eigen::Vector3d(request->pose.position.x, request->pose.position.y, request->pose.position.z);          // translate x,y,z
 
   // Publish arrow vector of pose
   visual_tools_->publishSphere(pose, rviz_visual_tools::RED, rviz_visual_tools::XXLARGE);
@@ -39,14 +39,14 @@ void sphere(const std::shared_ptr<visualization::srv::MarkerPublish::Request> re
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
-  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_server");
+  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("publish_marker_server");
 
   visual_tools_.reset(new rviz_visual_tools::RvizVisualTools("world", "/rviz_visual_tools", node));
 
   rclcpp::Service<visualization::srv::MarkerPublish>::SharedPtr service =
       node->create_service<visualization::srv::MarkerPublish>("publish_sphere", &sphere);
 
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add two ints.");
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to publish sphere");
 
   rclcpp::spin(node);
   rclcpp::shutdown();
