@@ -9,6 +9,7 @@
 #include <eigen3/Eigen/Geometry>
 // Msgs
 #include <geometry_msgs/msg/vector3.hpp>
+#include "visualization/srv/marker_publish.hpp"
 // services
 #include "std_srvs/srv/empty.hpp"
 // For visualizing things in rviz
@@ -22,8 +23,8 @@
 // For visualizing things in rviz
 rviz_visual_tools::RvizVisualToolsPtr visual_tools_;
 
-void sphere(const std::shared_ptr<std_srvs::srv::Empty::Request> request,
-            std::shared_ptr<std_srvs::srv::Empty::Response> response)
+void sphere(const std::shared_ptr<visualization::srv::MarkerPublish::Request> request,
+            std::shared_ptr<visualization::srv::MarkerPublish::Response> response)
 { // Create pose
   Eigen::Isometry3d pose;
   pose = Eigen::AngleAxisd(M_PI / 4, Eigen::Vector3d::UnitY()); // rotate along X axis by 45 degrees
@@ -42,8 +43,8 @@ int main(int argc, char **argv)
 
   visual_tools_.reset(new rviz_visual_tools::RvizVisualTools("world", "/rviz_visual_tools", node));
 
-  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr service =
-      node->create_service<std_srvs::srv::Empty>("publish_sphere", &sphere);
+  rclcpp::Service<visualization::srv::MarkerPublish>::SharedPtr service =
+      node->create_service<visualization::srv::MarkerPublish>("publish_sphere", &sphere);
 
   RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add two ints.");
 
