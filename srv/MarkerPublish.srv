@@ -1,2 +1,4 @@
 geometry_msgs/Pose pose
+int32 color_value 1
+string marker_ns
 ---
