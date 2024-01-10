@@ -87,7 +87,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
 void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request> request,
                  std::shared_ptr<visualization::srv::ArrowPublish::Response> response)
 {
-
+    visual_tools_->deleteAllMarkers();
     auto start_point = request->current_point;
     auto force_origin = request->force_origin;
     float norma = sqrt(pow(request->current_point.x - request->force_origin.x, 2) + pow(request->current_point.y - request->force_origin.y, 2) + pow(request->current_point.z - request->force_origin.z, 2));
@@ -96,7 +96,7 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
     finish_point.x = start_point.x + ((start_point.x - request->force_origin.x) * fuerza) / norma;
     finish_point.y = start_point.y + ((start_point.y - request->force_origin.y) * fuerza) / norma;
     finish_point.z = start_point.z + ((start_point.z - request->force_origin.z) * fuerza) / norma;
-    visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::XLARGE);
+    visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
     visual_tools_->trigger();
 }
 CoordenadasRectangulares posicion_;
