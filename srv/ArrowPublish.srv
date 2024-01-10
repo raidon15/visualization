@@ -1,0 +1,5 @@
+geometry_msgs/Point current_point
+geometry_msgs/Point force_origin
+int32 color_value 1
+string marker_ns
+---
