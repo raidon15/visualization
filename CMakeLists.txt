@@ -29,7 +29,7 @@ find_package(moveit_ros_planning_interface REQUIRED)
 add_executable(sphere_publish_service src/sphere_publish_service.cpp)
 add_executable(sphere_publish_client src/sphere_publish_client.cpp)
 add_executable(prueba src/test.cpp)
-#add_executable(arrow src/arrow_publish.cpp)
+add_executable(arrow src/arrow_publish.cpp)
 add_executable(arrow_publish_service src/arrow_publish_service.cpp)
 add_executable(arrow_publish_client src/arrow_publish_client.cpp)
 
@@ -68,13 +68,13 @@ ament_target_dependencies(prueba
   rviz_visual_tools
   )
 
-#ament_target_dependencies(arrow 
-# 3 rclcpp 
-#std_msgs 
- # moveit_visual_tools 
-  #moveit_ros_planning_interface
-  #geometry_msgs
-  #) 
+ament_target_dependencies(arrow 
+  rclcpp 
+  std_msgs 
+  moveit_visual_tools 
+  moveit_ros_planning_interface
+  geometry_msgs
+  ) 
 
 ament_target_dependencies(arrow_publish_service
   std_srvs
@@ -101,7 +101,7 @@ ament_target_dependencies(arrow_publish_client
   visualization
   ) 
 install(TARGETS
-  #arrow
+  arrow
   arrow_publish_service
   arrow_publish_client
   prueba

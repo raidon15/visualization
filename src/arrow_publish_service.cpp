@@ -78,7 +78,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     }
     else
     {
-        fuerza = esfericas.ro * a;
+        fuerza = 10;
     }
     fuerza = fuerza + a * abs((z - z_prima));
     return (fuerza);

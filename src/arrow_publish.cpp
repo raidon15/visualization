@@ -65,7 +65,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     }
     else
     {
-        fuerza = esfericas.ro * a;
+        fuerza = 10;
     }
     fuerza = fuerza + a * abs((z - z_prima));
     return (fuerza);
@@ -94,51 +94,45 @@ int main(int argc, char **argv)
     node_options.automatically_declare_parameters_from_overrides(true);
     auto node = rclcpp::Node::make_shared("publishing_arrow_rviz", node_options);
     auto moveit_visual_tools =
-        moveit_visual_tools::MoveItVisualTools{node, "/map", rviz_visual_tools::RVIZ_MARKER_TOPIC};
+        moveit_visual_tools::MoveItVisualTools{node, "/world", "/force_test"};
     /*
-    rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(node);
-    std::thread([&executor]() { executor.spin(); }).detach();
-
-    static const std::string PLANNING_GROUP = "panda_arm";
-    moveit::planning_interface::MoveGroupInterface move_group(node, PLANNING_GROUP);
-    */
-
-    moveit_visual_tools.enableBatchPublishing();
-    moveit_visual_tools.deleteAllMarkers();
-    /*//current state of the end effector
+    rclcpp::executors::SingleThreadedExecutor executor;eo
     geometry_msgs::msg::PoseStamped ee_actual_pose =  move_group.getCurrentPose();
     float ee_x = ee_actual_pose.pose.position.x;
     printf("imprimir estado \n");
     printf("%lf\n", ee_x);*/
 
     // moveit_visual_tools.deleteAllMarkers();
-
-    for (float k = 0; k <= 2.0; k = k + 0.1)
+    for (float h = 1.0; h <= 1.7; h = h + 0.2)
     {
-        RCLCPP_INFO(LOGGER, "k loop");
-        for (float j = -180; j <= 180; j = j + 1)
+        for (float k = -1.0; k <= -0.0; k = k + 0.1)
         {
+            RCLCPP_INFO(LOGGER, "k loop");
+            for (float j = -0.5; j <= 0.5; j = j + 0.1)
+            {
 
-            auto pose1 = geometry_msgs::msg::Pose();
-            CoordenadasRectangulares posicion = EsfericasRectangulares(j, k, 1.0, 1.0, 1.0);
-            pose1.position.x = posicion.x;
-            pose1.position.y = posicion.y;
-            pose1.position.z = posicion.z;
-            pose1.orientation.x = 0;
-            pose1.orientation.y = 0;
-            pose1.orientation.z = 0;
-            pose1.orientation.w = 0;
-            float fuerza1 = CalculoFuerza(posicion.x, posicion.y, posicion.z, 1.0, 1.0, 1.0);
-            double fuerza1d = fuerza1;
-            print_arrow(pose1.position.x, pose1.position.y, pose1.position.z, fuerza1, moveit_visual_tools, 1.0, 1.0, 1.0);
-            // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
-            RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
+                auto pose1 = geometry_msgs::msg::Pose();
+                //CoordenadasRectangulares posicion = EsfericasRectangulares(j, k, 1.0, 1.0, 1.0);
+                pose1.position.x = k;
+                pose1.position.y = j;
+                pose1.position.z = h;
+                pose1.orientation.x = 0;
+                pose1.orientation.y = 0;
+                pose1.orientation.z = 0;
+                pose1.orientation.w = 0;
+                float fuerza1 = CalculoFuerza( k, j, h, -0.84, 0.059, 1.17);
+                double fuerza1d = fuerza1;
+                RCLCPP_INFO(LOGGER, "x : '%f'", k);
+                print_arrow(k, j, h, fuerza1, moveit_visual_tools, -0.84, 0.059, 1.17);
+                // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
+                RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
+            }
+            
+            
         }
 
-        moveit_visual_tools.trigger();
     }
-
+    moveit_visual_tools.trigger();
     rclcpp::spin(node);
 
     rclcpp::shutdown();
