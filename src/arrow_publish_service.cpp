@@ -98,6 +98,7 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
     finish_point.z = start_point.z + ((start_point.z - request->force_origin.z) * fuerza) / norma;
     visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
     visual_tools_->trigger();
+    response->force = fuerza;
 }
 CoordenadasRectangulares posicion_;
 

@@ -3,3 +3,4 @@ geometry_msgs/Point force_origin
 int32 color_value 1
 string marker_ns
 ---
+float32 force
