@@ -78,7 +78,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     }
     else
     {
-        fuerza = 10;
+        fuerza = 10000;
     }
     fuerza = fuerza + a * abs((z - z_prima));
     return (fuerza);
@@ -115,7 +115,9 @@ int main(int argc, char **argv)
         new rviz_visual_tools::RvizVisualTools("/world", "/force_arrow", node_));
     std::cout << "debug";
     
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "publish in /force_arrow topic");
 
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to publish arrow ");
     // arrow.print_arrow(0.0,0.0,0.0,-0.84,0.059,1.17);
     rclcpp::spin(node_);
     rclcpp::shutdown();

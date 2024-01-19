@@ -61,7 +61,10 @@ int main(int argc, char** argv)
   rclcpp::Service<visualization::srv::MarkerPublish>::SharedPtr service =
       node->create_service<visualization::srv::MarkerPublish>("publish_sphere", &sphere);
 
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to publish sphere");
+
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "publish in /rviz_visual_tools topic");
+
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to publish sphere ");
 
   rclcpp::spin(node);
   rclcpp::shutdown();
