@@ -21,9 +21,9 @@ int main(int argc, char **argv)
   request->current_point.x = 0;
   request->current_point.y = 0;
   request->current_point.z = 0;
-  request->force_origin.x = -0.84;
-  request->force_origin.y = 0.059;
-  request->force_origin.z = 1.17;                                                            // CHANGE
+  request->force_origin.x = -2.0;//-0.84;
+  request->force_origin.y = 0.1;//0.059;
+  request->force_origin.z = 0.1;//1.17;                                                            // CHANGE
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {

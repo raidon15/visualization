@@ -32,7 +32,7 @@ add_executable(prueba src/test.cpp)
 add_executable(arrow src/arrow_publish.cpp)
 add_executable(arrow_publish_service src/arrow_publish_service.cpp)
 add_executable(arrow_publish_client src/arrow_publish_client.cpp)
-
+add_executable(arrow_publish_grasppoint_service src/arrow_publish_grasppoint_service.cpp)
 
 ament_target_dependencies(sphere_publish_service 
   std_srvs
@@ -88,6 +88,19 @@ ament_target_dependencies(arrow_publish_service
   rviz_visual_tools
   visualization
   ) 
+
+ament_target_dependencies(arrow_publish_grasppoint_service
+  std_srvs
+  rclcpp 
+  geometry_msgs
+  rviz_common
+  moveit_core
+  eigen3_cmake_module
+  eigen_stl_containers
+  Eigen3
+  rviz_visual_tools
+  visualization
+  ) 
 ament_target_dependencies(arrow_publish_client
   std_srvs
   rclcpp 
@@ -103,10 +116,12 @@ ament_target_dependencies(arrow_publish_client
 install(TARGETS
   arrow
   arrow_publish_service
+  arrow_publish_grasppoint_service
   arrow_publish_client
   prueba
   sphere_publish_service
   sphere_publish_client
+  
   DESTINATION lib/${PROJECT_NAME})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
