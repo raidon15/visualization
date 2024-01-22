@@ -54,7 +54,7 @@ CoordenadasEsfericas RectangulareEsfericas(float x, float y, float z, float x_pr
 CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0)
 {
     alfa = 0.0174533 * alfa;
-    float ro = 0.5;
+    float ro = 0.15;
     float x = ro * cos(alfa) + x_prima;
     float y = ro * sin(alfa) + y_prima;
     float z1 = z;
@@ -107,7 +107,7 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
         finish_point.x = start_point.x + ((start_point.x - force_origin.x) * fuerza) / norma;
         finish_point.y = start_point.y + ((start_point.y - force_origin.y) * fuerza) / norma;
         finish_point.z = start_point.z + ((start_point.z - force_origin.z) * fuerza) / norma;
-        visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
+        visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::XSMALL);
         visual_tools_->trigger();
         // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
         // RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
@@ -123,10 +123,10 @@ int main(int argc, char **argv)
     rclcpp::init(argc, argv);
     rclcpp::NodeOptions node_options;
     node_options.automatically_declare_parameters_from_overrides(true);
-    auto node_ = rclcpp::Node::make_shared("publishing_arrow_rviz", node_options);
-    auto service = node_->create_service<visualization::srv::ArrowPublish>("publish_arrow", &print_arrow);
+    auto node_ = rclcpp::Node::make_shared("grasp_point_arrow", node_options);
+    auto service = node_->create_service<visualization::srv::ArrowPublish>("publish_grasp_point_arrow", &print_arrow);
     visual_tools_.reset(
-        new rviz_visual_tools::RvizVisualTools("/world", "/force_arrow", node_));
+        new rviz_visual_tools::RvizVisualTools("/world", "/force_arrow_grasp_point", node_));
     std::cout << "debug";
 
     // arrow.print_arrow(0.0,0.0,0.0,-0.84,0.059,1.17);
