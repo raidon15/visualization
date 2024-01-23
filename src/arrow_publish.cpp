@@ -54,26 +54,24 @@ CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_pri
   return rectangulares;
 };
 
-float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0, int direccion = 0)
+float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0, int direccion =0)
 {
-  CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
-  int direccion_ = direccion ;
-  float alfa2 = esfericas.alfa * 57.2958 + direccion;
-  esfericas.alfa = esfericas.alfa + direccion * 0.01744;
-  RCLCPP_INFO(LOGGER, "alfa calculada: '%f'", alfa2);
-  float a = 0.5;
-  float fuerza = 0.0;
 
-  if (alfa2 < 90 && alfa2 > -90)
-  {
-    fuerza = esfericas.ro * a * abs(sin(esfericas.alfa));
-  }
-  else
-  {
-    fuerza = 10;
-  }
-  fuerza = fuerza + a * abs((z - z_prima));
-  return (fuerza);
+    CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
+    float alfa2 = esfericas.alfa * 57.2958 + direccion;
+    RCLCPP_INFO(LOGGER, "alfa calculada: '%f'", alfa2);
+    float a = 0.5;
+    float fuerza = 0.0;
+    if (alfa2 < 90 && alfa2 > -90)
+    {
+        fuerza = esfericas.ro * a * abs(sin(esfericas.alfa + direccion * 0.01745));
+    }
+    else
+    {
+        fuerza = 10;
+    }
+    fuerza = fuerza + a * abs((z - z_prima));
+    return (fuerza);
 }
 
 void print_arrow(float x, float y, float z, float fuerza, moveit_visual_tools::MoveItVisualTools& vs, float x_prima = 0,
@@ -107,31 +105,31 @@ int main(int argc, char** argv)
   printf("imprimir estado \n");
   printf("%lf\n", ee_x);*/
 
-  // moveit_visual_tools.deleteAllMarkers();
+    // moveit_visual_tools.deleteAllMarkers();
 
-  RCLCPP_INFO(LOGGER, "k loop");
-  for (float alfa = -175; alfa <= 175; alfa = alfa + 10)
-  {
-    auto pose1 = geometry_msgs::msg::Pose();
-    CoordenadasRectangulares posicion = EsfericasRectangulares(alfa, 0.0, 0.0, 0.0, 1.0);
+    RCLCPP_INFO(LOGGER, "k loop");
+    for (float angle = 0; angle <= 359; angle = angle + 1)
+    {
 
-    pose1.position.x = posicion.x;
-    pose1.position.y = posicion.y;
-    pose1.position.z = 0;
-    pose1.orientation.x = 0;
-    pose1.orientation.y = 0;
-    pose1.orientation.z = 0;
-    pose1.orientation.w = 0;
-    float fuerza1 = CalculoFuerza(posicion.x, posicion.y, 0.0, 0, 0, 0);
-    double fuerza1d = fuerza1;
-    // RCLCPP_INFO(LOGGER, "x : '%f'", k);
-    print_arrow(posicion.x, posicion.y, 0.0, fuerza1, moveit_visual_tools, 0.0, 0.0, 0.0);
-    // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
-    // RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
-  }
+        auto pose1 = geometry_msgs::msg::Pose();
+        CoordenadasRectangulares posicion = EsfericasRectangulares(angle, 0.0, 1.0, 1.0, 0.0);
+        pose1.position.x = posicion.x;
+        pose1.position.y = posicion.y;
+        pose1.position.z = 0.0;
+        pose1.orientation.x = 0;
+        pose1.orientation.y = 0;
+        pose1.orientation.z = 0;
+        pose1.orientation.w = 0;
+        float fuerza1 = CalculoFuerza(pose1.position.x, pose1.position.y, pose1.position.z, 1.0, 1.0, 0.0);
+        double fuerza1d = fuerza1;
+        //RCLCPP_INFO(LOGGER, "x : '%f'", k);
+        print_arrow(pose1.position.x, pose1.position.y, pose1.position.z, fuerza1, moveit_visual_tools, 1.0,1.0,0.0);
+        // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
+        //RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
+    }
 
-  moveit_visual_tools.trigger();
-  rclcpp::spin(node);
+    moveit_visual_tools.trigger();
+    rclcpp::spin(node);
 
   rclcpp::shutdown();
   return 0;

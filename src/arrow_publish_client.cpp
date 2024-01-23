@@ -15,16 +15,16 @@ int main(int argc, char **argv)
 
   std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("publish_arrow_client");  // CHANGE
   rclcpp::Client<visualization::srv::ArrowPublish>::SharedPtr client =                // CHANGE
-    node->create_client<visualization::srv::ArrowPublish>("/publish_arrow");          // CHANGE
+    node->create_client<visualization::srv::ArrowPublish>("/publish_grasp_point_arrow");          // CHANGE
 
   auto request = std::make_shared<visualization::srv::ArrowPublish::Request>();       // CHANGE
   request->current_point.x = 0;
   request->current_point.y = 0;
   request->current_point.z = 0;
-  request->force_origin.x = -0.84;
-  request->force_origin.y = 0.059;
-  request->force_origin.z = 1.17;                                                            // CHANGE
-
+  request->force_origin.x = 0.0;//-0.84;
+  request->force_origin.y = 0.0;//0.059;
+  request->force_origin.z = 0.0;//1.17;                                                            // CHANGE
+  request->force_direction = 150;
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
