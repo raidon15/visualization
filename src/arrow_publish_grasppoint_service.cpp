@@ -54,7 +54,7 @@ CoordenadasEsfericas RectangulareEsfericas(float x, float y, float z, float x_pr
 CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0)
 {
     alfa = 0.0174533 * alfa;
-    float ro = 0.15;
+    float ro = 0.5;
     float x = ro * cos(alfa) + x_prima;
     float y = ro * sin(alfa) + y_prima;
     float z1 = z;
@@ -64,18 +64,33 @@ CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_pri
     rectangulares.z = z1;
     return rectangulares;
 };
-
+float multi_valor(float angulo)
+{
+    if (angulo > 360)
+    {
+        return (angulo - 360);
+    }
+    else if (angulo < 0)
+    {
+        return (angulo + 360);
+    }
+    else
+    {
+        return angulo;
+    }
+}
 float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0, int direccion = 0)
 {
 
     CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
-    float alfa2 = esfericas.alfa * 57.2958 + direccion;
+    float alfa2 = multi_valor( esfericas.alfa * 57.2958);
     // RCLCPP_INFO(LOGGER, "alfa calculada: '%f'", alfa2);
     float a = 0.5;
     float fuerza = 0.0;
-    if (alfa2 < 90 && alfa2 > -90)
+
+    if (alfa2 < multi_valor(90 + direccion) && alfa2 > multi_valor(270 - direccion))
     {
-        fuerza = esfericas.ro * a * abs(sin(esfericas.alfa + direccion * 0.01745));
+        fuerza = esfericas.ro * a * abs(sin(esfericas.alfa * 0.01745));
     }
     else
     {
@@ -95,7 +110,7 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
 
     auto finish_point = geometry_msgs::msg::Point();
 
-    for (float angle = 0; angle <= 359; angle = angle + 10)
+    for (float angle = 160; angle <= 200; angle = angle + 10)
     {
 
         CoordenadasRectangulares posicion = EsfericasRectangulares(angle, force_origin.z, force_origin.x, force_origin.y, force_origin.z);
