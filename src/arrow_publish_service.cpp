@@ -64,26 +64,64 @@ CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_pri
     rectangulares.z = z1;
     return rectangulares;
 };
-
-float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0, int direccion =0)
+float multi_valor(float angulo)
 {
+  if (angulo > 360)
+  {
+    return (angulo - 360);
+  }
+  else if (angulo < 0)
+  {
+    return (angulo + 360);
+  }
+  else
+  {
+    return angulo;
+  }
+}
+float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima = 0, float z_prima = 0,
+                    float direccion = 0)
+{
+  CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
+  float alfa2 = multi_valor(esfericas.alfa * 57.2958);
 
-    CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
-    float alfa2 = esfericas.alfa * 57.2958 + direccion;
-    //RCLCPP_INFO(LOGGER, "alfa calculada: '%f'", alfa2);
-    float a = 0.5;
-    float fuerza = 0.0;
-    if (alfa2 < 90 && alfa2 > -90)
+  direccion = multi_valor(direccion);
+
+  RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "alfa calculada: '%f' direccion: '%lf'", alfa2, direccion);
+  float a = 0.5;
+  float fuerza = 0.0;
+  float min = multi_valor(direccion - 90);
+  float max = multi_valor(direccion + 90);
+  RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "min: '%f' max: '%lf'", min, max);
+  if (direccion > 90 && direccion < 270)
+  {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "wrong ");
+    // RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "ok ");
+    if (alfa2 >= min && alfa2 <= max)
     {
-        fuerza = esfericas.ro * a * abs(sin(esfericas.alfa + direccion * 0.01745));
+      return (a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a);
     }
     else
     {
-        fuerza = 10000;
+      return (10);
     }
-    fuerza = fuerza + a * abs((z - z_prima));
-    return (fuerza);
+  }
+
+  else
+  {
+    // RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "wrong ");
+    RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "ok ");
+    if (alfa2 >= min || alfa2 <= max)
+    {
+      return (a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a);
+    }
+    else
+    {
+      return (10);
+    }
+  }
 }
+
 
 void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request> request,
                  std::shared_ptr<visualization::srv::ArrowPublish::Response> response)

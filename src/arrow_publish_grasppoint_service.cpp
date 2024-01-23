@@ -56,7 +56,7 @@ CoordenadasRectangulares EsfericasRectangulares(float alfa, float z, float x_pri
                                                 float z_prima = 0)
 {
   alfa = 0.0174533 * alfa;
-  float ro = 0.5;
+  float ro = 0.15;
   float x = ro * cos(alfa) + x_prima;
   float y = ro * sin(alfa) + y_prima;
   float z1 = z;
@@ -90,7 +90,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
   direccion = multi_valor(direccion);
 
   RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "alfa calculada: '%f' direccion: '%lf'", alfa2, direccion);
-  float a = 1;
+  float a = 0.5;
   float fuerza = 0.0;
   float min = multi_valor(direccion - 90);
   float max = multi_valor(direccion + 90);
@@ -101,7 +101,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     // RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "ok ");
     if (alfa2 >= min && alfa2 <= max)
     {
-      return (esfericas.ro * a * abs(sin((alfa2 - direccion) * 0.01745)) + a * abs((z - z_prima)));
+      return (a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a);
     }
     else
     {
@@ -115,7 +115,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "ok ");
     if (alfa2 >= min || alfa2 <= max)
     {
-      return (esfericas.ro * a * abs(sin((alfa2 - direccion) * 0.01745)) + a * abs((z - z_prima)));
+      return (a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a);
     }
     else
     {
@@ -134,7 +134,7 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
 
   auto finish_point = geometry_msgs::msg::Point();
 
-  for (float angle = 0; angle <= 360; angle = angle + 1)
+  for (float angle = 0; angle <= 360; angle = angle + 10)
   {
     CoordenadasRectangulares posicion =
         EsfericasRectangulares(angle, force_origin.z, force_origin.x, force_origin.y, force_origin.z);
