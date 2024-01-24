@@ -105,7 +105,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     }
     else
     {
-      return (10);
+      return (a +  esfericas.ro * a);
     }
   }
 
@@ -119,7 +119,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     }
     else
     {
-      return (10);
+      return (a +  esfericas.ro * a);
     }
   }
 }

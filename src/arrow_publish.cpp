@@ -64,13 +64,13 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
     float fuerza = 0.0;
     if (alfa2 < 90 && alfa2 > -90)
     {
-        fuerza = esfericas.ro * a * abs(sin(esfericas.alfa + direccion * 0.01745));
+        fuerza = a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a;
     }
     else
     {
-        fuerza = 10;
+        fuerza = a +  esfericas.ro * a;
     }
-    fuerza = fuerza + a * abs((z - z_prima));
+    
     return (fuerza);
 }
 
