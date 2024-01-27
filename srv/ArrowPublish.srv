@@ -3,6 +3,7 @@ geometry_msgs/Point force_origin
 int32 color_value 1
 int32 force_direction 0
 string marker_ns
+float32 force 0.0
 
 ---
 float32 force
