@@ -86,11 +86,11 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
 {
   CoordenadasEsfericas esfericas = RectangulareEsfericas(x, y, z, x_prima, y_prima, z_prima);
   float alfa2 = multi_valor(esfericas.alfa * 57.2958);
-
+  RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "alfa2 %s", alfa2);
   direccion = multi_valor(direccion);
 
   RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "alfa calculada: '%f' direccion: '%lf'", alfa2, direccion);
-  float a = 0.5;
+  float a = 1.5;
   float fuerza = 0.0;
   float min = multi_valor(direccion - 90);
   float max = multi_valor(direccion + 90);
@@ -112,7 +112,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima = 0, float y_prima 
   else
   {
     // RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "wrong ");
-    RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "ok ");
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "ok ");
     if (alfa2 >= min || alfa2 <= max)
     {
       return (a * abs(sin((alfa2 - direccion) * 0.01745)) + esfericas.ro * a);
@@ -137,15 +137,15 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
   for (float angle = 0; angle <= 360; angle = angle + 10)
   {
     CoordenadasRectangulares posicion =
-        EsfericasRectangulares(angle, force_origin.z, force_origin.x, force_origin.y, force_origin.z);
-    start_point.x = posicion.x;
+        EsfericasRectangulares(angle, -force_origin.x, force_origin.z, force_origin.y, -force_origin.x);
+    start_point.x = -posicion.z;
     start_point.y = posicion.y;
-    start_point.z = force_origin.z;
-    auto fuerza = CalculoFuerza(start_point.x, start_point.y, start_point.z, force_origin.x, force_origin.y,
-                                force_origin.z, force_direction);
+    start_point.z = posicion.x;
+    auto fuerza = CalculoFuerza(-start_point.z, start_point.y, start_point.z, -force_origin.z, force_origin.y,
+                                force_origin.x, force_direction);
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "alfa: '%f'Fuerza: '%lf'", angle, fuerza);
-    float norma = sqrt(pow(start_point.x - force_origin.x, 2) + pow(start_point.y - force_origin.y, 2) +
-                       pow(start_point.z - force_origin.z, 2));
+    float norma = sqrt(pow(start_point.x - force_origin.z, 2) + pow(start_point.y - force_origin.y, 2) +
+                       pow(start_point.z + force_origin.x, 2));
     finish_point.x = start_point.x + ((start_point.x - force_origin.x) * fuerza) / norma;
     finish_point.y = start_point.y + ((start_point.y - force_origin.y) * fuerza) / norma;
     finish_point.z = start_point.z + ((start_point.z - force_origin.z) * fuerza) / norma;
