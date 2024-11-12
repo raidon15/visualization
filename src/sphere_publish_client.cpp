@@ -21,9 +21,10 @@ int main(int argc, char **argv)
     node->create_client<visualization::srv::MarkerPublish>("/publish_sphere");          // CHANGE
 
   auto request = std::make_shared<visualization::srv::MarkerPublish::Request>();       // CHANGE
-  request->pose.position.x = atoll(argv[1]);
-  request->pose.position.y = atoll(argv[2]);
-  request->pose.position.z = atoll(argv[3]);                                                              // CHANGE
+  request->pose.position.x = std::stof(argv[1]);
+  request->pose.position.y = std::stof(argv[2]);
+  request->pose.position.z = std::stof(argv[3]);  
+                                                              // CHANGE
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Publishing sphere in x y z ");
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Publishing sphere in x: %s %s %s ",argv[1],argv[2],argv[3]);
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service publish marker");    // CHANGE
   }
