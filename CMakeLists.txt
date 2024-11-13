@@ -33,6 +33,10 @@ add_executable(arrow src/arrow_publish.cpp)
 add_executable(arrow_publish_service src/arrow_publish_service.cpp)
 add_executable(arrow_publish_client src/arrow_publish_client.cpp)
 add_executable(arrow_publish_grasppoint_service src/arrow_publish_grasppoint_service.cpp src/force_node.cpp)
+add_executable(arrow_publish_grasppoint_service_square src/arrow_publish_grasppoint_service_square.cpp src/force_node.cpp)
+
+add_executable(arrow_publish_grasppoint_client src/arrow_publish_grasppoint_client.cpp )
+
 add_executable(arrow_publish_service_withoutforce src/arrow_publish_service_withoutforce.cpp)
 
 
@@ -116,6 +120,30 @@ ament_target_dependencies(arrow_publish_grasppoint_service
   rviz_visual_tools
   visualization
   ) 
+ament_target_dependencies(arrow_publish_grasppoint_service_square
+  std_srvs
+  rclcpp 
+  geometry_msgs
+  rviz_common
+  moveit_core
+  eigen3_cmake_module
+  eigen_stl_containers
+  Eigen3
+  rviz_visual_tools
+  visualization
+  ) 
+ament_target_dependencies(arrow_publish_grasppoint_client
+  std_srvs
+  rclcpp 
+  geometry_msgs
+  rviz_common
+  moveit_core
+  eigen3_cmake_module
+  eigen_stl_containers
+  Eigen3
+  rviz_visual_tools
+  visualization
+  ) 
 ament_target_dependencies(arrow_publish_client
   std_srvs
   rclcpp 
@@ -132,6 +160,8 @@ install(TARGETS
   arrow
   arrow_publish_service
   arrow_publish_grasppoint_service
+  arrow_publish_grasppoint_service_square
+  arrow_publish_grasppoint_client
   arrow_publish_client
   prueba
   sphere_publish_service

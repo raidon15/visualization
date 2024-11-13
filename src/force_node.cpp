@@ -79,7 +79,7 @@ float CalculoFuerza(float x, float y, float z, float x_prima , float y_prima , f
   direccion = multi_valor(direccion);
 
   RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "alfa calculada: '%f' direccion: '%lf'", alfa2, direccion);
-  float a = 0.5;
+  float a = 0.25;
   float fuerza = 0.0;
   float min = multi_valor(direccion - 90);
   float max = multi_valor(direccion + 90);

@@ -37,9 +37,10 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
     finish_point.x = start_point.x + ((start_point.x - request->force_origin.x) * request->force) / norma;
     finish_point.y = start_point.y + ((start_point.y - request->force_origin.y) * request->force) / norma;
     finish_point.z = start_point.z + ((start_point.z - request->force_origin.z) * request->force) / norma;
-    visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
+    visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::XSMALL);
     visual_tools_->trigger();
     response->force = request->force;
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "force: %f", response->force);
 }
 
 int main(int argc, char **argv)

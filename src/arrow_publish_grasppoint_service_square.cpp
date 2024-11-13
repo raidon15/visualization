@@ -25,7 +25,6 @@
 
 rviz_visual_tools::RvizVisualToolsPtr visual_tools_;
 
-
 void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request> request,
                  std::shared_ptr<visualization::srv::ArrowPublish::Response> response)
 {
@@ -35,35 +34,34 @@ void print_arrow(const std::shared_ptr<visualization::srv::ArrowPublish::Request
   auto force_direction = request->force_direction;
 
   auto finish_point = geometry_msgs::msg::Point();
-
-  for (float angle = 0; angle <= 360; angle = angle + 10)
+  for (float z = -1.0; z <= 0.0; z = z + 0.2)
   {
-    CoordenadasRectangulares posicion = EsfericasRectangulares(angle, -force_origin.x, force_origin.z, force_origin.y, -force_origin.x);
+    for (float y = -1.0; y <= 1.0; y = y + 0.2)
+    {
+      for (float x = -1.0; x <= 1.0; x = x + 0.2)
+      {
+        start_point.x = -z;
+        start_point.y = y;
+        start_point.z = x;
 
+        auto fuerza = CalculoFuerza(start_point.z, start_point.y, -start_point.x, force_origin.z, force_origin.y,
+                                    -force_origin.x, force_direction);
 
-    start_point.x = -posicion.z;
-    start_point.y = posicion.y;
-    start_point.z = posicion.x;
+        
 
+        float norma = sqrt(pow(start_point.x - force_origin.x, 2) + pow(start_point.y - force_origin.y, 2) +
+                           pow(start_point.z - force_origin.z, 2));
 
-    auto fuerza = CalculoFuerza( start_point.z, start_point.y, -start_point.x,
-                                 force_origin.z, force_origin.y,-force_origin.x,
-                                force_direction);
-
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "alfa: '%f'Fuerza: '%lf'", angle, fuerza);
-
-    float norma = sqrt(pow(start_point.x - force_origin.x, 2) 
-                      + pow(start_point.y - force_origin.y, 2) 
-                      + pow(start_point.z - force_origin.z, 2));
-                      
-    finish_point.x = start_point.x + ((start_point.x - force_origin.x) * fuerza) / norma;
-    finish_point.y = start_point.y + ((start_point.y - force_origin.y) * fuerza) / norma;
-    finish_point.z = start_point.z + ((start_point.z - force_origin.z) * fuerza) / norma;
-    visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::XSMALL);
-    visual_tools_->trigger();
-    // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
-    // RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
-    response->force = fuerza;
+        finish_point.x = start_point.x + ((start_point.x - force_origin.x) * fuerza) / norma;
+        finish_point.y = start_point.y + ((start_point.y - force_origin.y) * fuerza) / norma;
+        finish_point.z = start_point.z + ((start_point.z - force_origin.z) * fuerza) / norma;
+        visual_tools_->publishArrow(start_point, finish_point, rviz_visual_tools::RED, rviz_visual_tools::XSMALL);
+        visual_tools_->trigger();
+        // moveit_visual_tools.publishXArrow(pose1, rviz_visual_tools::RED, rviz_visual_tools::LARGE, fuerza1d);
+        // RCLCPP_INFO(LOGGER, "alfa: '%f'Fuerza: '%lf'", j, fuerza1d);
+        response->force = fuerza;
+      }
+    }
   }
 }
 CoordenadasRectangulares posicion_;
@@ -76,8 +74,6 @@ int main(int argc, char** argv)
   node_options.automatically_declare_parameters_from_overrides(true);
   auto node_ = rclcpp::Node::make_shared("grasp_point_arrow", node_options);
   auto service = node_->create_service<visualization::srv::ArrowPublish>("publish_grasp_point_arrow", &print_arrow);
-
- 
 
   visual_tools_.reset(new rviz_visual_tools::RvizVisualTools("/world", "/force_arrow_grasp_point", node_));
   std::cout << "debug";
