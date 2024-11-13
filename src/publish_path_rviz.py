@@ -7,9 +7,10 @@ def read_csv(file_path):
     positions = []
     with open(file_path, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
+        next(csvreader)
         for row in csvreader:
             try:
-                x, y, z = map(float, row)
+                x, y, z,force = map(float, row)
                 positions.append((x, y, z))
             except ValueError as e:
                 print(f"Error parsing row {row}: {e}")
@@ -36,12 +37,12 @@ def main():
     rclpy.init()
     node = rclpy.create_node('csv_to_path_node')
 
-    file_path = 'example.csv'  # Replace with your actual CSV file path
+    file_path = '/home/benjamin/panda_gym/csv/PPO.csv'  # Replace with your actual CSV file path
     positions = read_csv(file_path)
     path_msg = create_path_message(positions)
 
     # Publish the path message
-    path_publisher = node.create_publisher(Path, 'path_topic', 10)  # Replace 'path_topic' with your desired topic name
+    path_publisher = node.create_publisher(Path, 'agent_path', 10)  # Replace 'path_topic' with your desired topic name
     path_publisher.publish(path_msg)
 
     node.destroy_node()
