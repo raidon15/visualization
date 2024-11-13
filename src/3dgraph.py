@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 
-array = np.zeros([110,150])
+array = np.zeros([101,150])
 print(array)
 header = ['x', 'y', 'z', 'force']
 file_name = 'example.csv'
@@ -74,12 +74,12 @@ if __name__ == '__main__':
     while (x1 < 100):
         y1 = -50
         
-        while (y1 < 60):
+        while (y1 < 51):
             force = CalculoFuerza(x1/100, y1/100, 0)
             force_reward = - 5 * (force* force)
             distance_reward = RectangulareEsfericas(x1/100,y1/100,0)
             distance_reward = distance_reward["ro"]
-            array[y1+50][x1+50] = distance_reward + force_reward
+            array[y1+50][x1+50] = CalculoFuerza(x1/100, y1/100, 0)*100
             #csv_writer.writerow([x1, y1, array[x1][y1]])
 
             y1 = y1+1
@@ -87,12 +87,12 @@ if __name__ == '__main__':
 
     # Make data.
     X = np.arange( -0.5, 1.0, 0.01)
-    Y = np.arange( -0.5, 0.6, 0.01)
+    Y = np.arange( -0.5, 0.51, 0.01)
     X, Y = np.meshgrid(X, Y)
     print(type(X))
     surf = ax.plot_surface(X,Y,array, cmap=cm.coolwarm,linewidth=0, antialiased=False)
     ax.xaxis.set_label_text("[mts]")
     ax.yaxis.set_label_text("[mts]")
-    clb=fig.colorbar(surf, shrink=1.0, aspect=10)
-    clb.ax.yaxis.set_label_text("Reward")
+    clb=fig.colorbar(surf, shrink=0.5, aspect=10)
+    clb.ax.yaxis.set_label_text("[N]")
     plt.show()

@@ -32,7 +32,7 @@ add_executable(prueba src/test.cpp)
 add_executable(arrow src/arrow_publish.cpp)
 add_executable(arrow_publish_service src/arrow_publish_service.cpp)
 add_executable(arrow_publish_client src/arrow_publish_client.cpp)
-add_executable(arrow_publish_grasppoint_service src/arrow_publish_grasppoint_service.cpp)
+add_executable(arrow_publish_grasppoint_service src/arrow_publish_grasppoint_service.cpp src/force_node.cpp)
 add_executable(arrow_publish_service_withoutforce src/arrow_publish_service_withoutforce.cpp)
 
 
